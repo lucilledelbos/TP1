@@ -1,5 +1,6 @@
 package monprojet.dao;
 
+import monprojet.dto.PopulationPays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -12,6 +13,7 @@ import java.util.List;
 import monprojet.entity.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.jdbc.Sql;
+import monprojet.dto.PopulationPays;
 
 @Log4j2 // Génère le 'logger' pour afficher les messages de trace
 @DataJpaTest
@@ -42,5 +44,22 @@ public class CountryRepositoryTest {
         long nombre = countryDAO.count();
         assertEquals(combienDePaysDansLeJeuDeTest, nombre, "On doit trouver 4 pays" );
     }
+
+
+    @Test
+    @Sql("test-data.sql")
+    void populationPaysTest(){
+        log.info("grace à l'id du pays (1) nous pouvons compter le nb d'habitant");
+        assertEquals( 12 , countryDAO.populationPays(1));
+
+    }
+
+
+    @Test
+    @Sql("test-data.sql")
+    void listePopulationTest2(){
+        assertEquals(12, countryDAO.listePopulation().get(0).getPopulation());
+    }
+
 
 }
